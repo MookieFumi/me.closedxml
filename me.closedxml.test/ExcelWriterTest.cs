@@ -1,30 +1,45 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using me.closedxml.Queries.QueryResult;
 using NUnit.Framework;
 
-namespace closedxml.test
+namespace me.closedxml.test
 {
     public class ExcelWriterTest
     {
         [Test]
         public void WriteTest()
         {
-            var companies = new Collection<Company>();
-            companies.Add(new Company() { CompanyId = 1, Name = "TAB Consultores" });
-            companies.Add(new Company() { CompanyId = 2, Name = "Async Consultores" });
-
-            var customers = new Collection<Customer>();
-            customers.Add(new Customer() { CustomerId = 1, Name = "Miguel Ángel Martín Hernández" });
-            customers.Add(new Customer() { CustomerId = 2, Name = "Montserrar Gómez Rubiano" });
-            customers.Add(new Customer() { CustomerId = 3, Name = "Miguel Martín Sánchez" });
-            customers.Add(new Customer() { CustomerId = 4, Name = "María Francisca Hernández Jiménez" });
-
             var data = new Collection<ExcelData> 
             { 
-                new ExcelData() { Name = "Companies", Data = companies}, 
-                new ExcelData() { Name = "Customers", Data= customers }
+                new ExcelData { Name = "Companies", Data = GetCompanies()}, 
+                new ExcelData { Name = "Customers", Data= GetCustomers ()}
             };
             var excelWriter = new ExcelWriter(data);
             excelWriter.Write();
         }
+
+        #region Helpers
+
+        private IEnumerable<CompanyQueryResult> GetCompanies()
+        {
+            var companies = new Collection<CompanyQueryResult>();
+            companies.Add(new CompanyQueryResult { CompanyId = 1, Name = "TAB Consultores" });
+            companies.Add(new CompanyQueryResult { CompanyId = 2, Name = "Async Consultores" });
+            return companies;
+        }
+
+        private IEnumerable<CustomerQueryResult> GetCustomers()
+        {
+            var customers = new Collection<CustomerQueryResult>();
+            customers.Add(new CustomerQueryResult { CustomerId = 1, Name = "Miguel Ángel Martín Hernández" });
+            customers.Add(new CustomerQueryResult { CustomerId = 2, Name = "Montserrar Gómez Rubiano" });
+            customers.Add(new CustomerQueryResult { CustomerId = 3, Name = "Miguel Martín Sánchez" });
+            customers.Add(new CustomerQueryResult { CustomerId = 4, Name = "María Francisca Hernández Jiménez" });
+            return customers;
+        }
+
+        #endregion
     }
 }
