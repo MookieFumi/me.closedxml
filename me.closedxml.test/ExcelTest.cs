@@ -15,10 +15,11 @@ namespace me.closedxml.test
     {
         private const string FilePath = @"c:\temp\excel.xlsx";
         private Collection<IExcelData<IQueryResult>> _items;
-
+        private Random _random;
         [TestFixtureSetUp]
         public void TextFixtureSetUp()
         {
+            _random = new Random();
             _items = new Collection<IExcelData<IQueryResult>>();
             _items.Add(new ExcelData<CompanyExcelConfigurationWorksheetRow>("Companies", GetCompanies()));
             _items.Add(new ExcelData<CustomerExcelConfigurationWorksheetRow>("Customers", GetCustomers()));
@@ -51,23 +52,25 @@ namespace me.closedxml.test
 
         private IEnumerable<CompanyQueryResult> GetCompanies()
         {
-            var companies = new Collection<CompanyQueryResult>
-                            {
-                                new CompanyQueryResult(1, "TAB Consultores"),
-                                new CompanyQueryResult(2, "Async Consultores")
-                            };
+            const int companiesNumber = 50;
+            var companies = new Collection<CompanyQueryResult>();
+            for (var i = 0; i < companiesNumber; i++)
+            {
+                var companyQueryResult = new CompanyQueryResult(i, Guid.NewGuid().ToString());
+                companies.Add(companyQueryResult);
+            }
             return companies;
         }
 
         private IEnumerable<CustomerQueryResult> GetCustomers()
         {
-            var random = new Random();
+
 
             var customers = new Collection<CustomerQueryResult>();
-            customers.Add(new CustomerQueryResult(1, "Miguel Ángel Martín Hernández", DateTime.UtcNow.Date, (decimal)random.NextDouble(), true));
-            customers.Add(new CustomerQueryResult(2, "Montserrar Gómez Rubiano", DateTime.UtcNow.AddYears(-10).Date, (decimal)random.NextDouble(), false));
-            customers.Add(new CustomerQueryResult(3, "Miguel Martín Sánchez", DateTime.UtcNow.AddYears(-20).Date, (decimal)random.NextDouble(), true));
-            customers.Add(new CustomerQueryResult(4, "María Francisca Hernández Jiménez", DateTime.UtcNow.AddYears(-30).Date, (decimal)random.NextDouble(), false));
+            customers.Add(new CustomerQueryResult(1, "Miguel Ángel Martín Hernández", DateTime.UtcNow.Date, (decimal)_random.NextDouble(), true));
+            customers.Add(new CustomerQueryResult(2, "Montserrar Gómez Rubiano", DateTime.UtcNow.AddYears(-10).Date, (decimal)_random.NextDouble(), false));
+            customers.Add(new CustomerQueryResult(3, "Miguel Martín Sánchez", DateTime.UtcNow.AddYears(-20).Date, (decimal)_random.NextDouble(), true));
+            customers.Add(new CustomerQueryResult(4, "María Francisca Hernández Jiménez", DateTime.UtcNow.AddYears(-30).Date, (decimal)_random.NextDouble(), false));
             return customers;
         }
 
