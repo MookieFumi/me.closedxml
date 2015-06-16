@@ -1,41 +1,49 @@
-﻿using ClosedXML.Excel;
+﻿using System.Linq;
+using ClosedXML.Excel;
 
 namespace me.closedxml
 {
-    public class ExcelConfigurationWorkSheet
+    public class ExcelConfigurationWorksheet
     {
-        private readonly IXLWorksheet _configurationWorkSheet;
+        public static IXLWorksheet WorkSheet;
+        private readonly ExcelStyler _excelStyler;
 
-        public ExcelConfigurationWorkSheet(XLWorkbook workbook)
+        public ExcelConfigurationWorksheet(XLWorkbook workbook, ExcelStyler excelStyler)
         {
-            _configurationWorkSheet = workbook.Worksheets.Add("Configuration");
-            AddConfigurationWorkSheet();
+            if (workbook.Worksheets.All(p => p.Name != strings.Configuration))
+            {
+                workbook.Worksheets.Add(strings.Configuration);
+            }
+            WorkSheet = workbook.Worksheets.Single(p => p.Name == strings.Configuration);
+            _excelStyler = excelStyler;
+            AddHeaderValues();
+            SetHeaderStyle();
         }
 
-        private void AddConfigurationWorkSheet()
+        private void AddHeaderValues()
         {
-            _configurationWorkSheet.Cell("A1").Value = "Worksheet Name";
-            _configurationWorkSheet.Cell("B1").Value = "Type";
-            _configurationWorkSheet.Range("A1:B1").Style
-                .Font.SetFontSize(11)
-                .Font.SetBold(true)
-                .Font.SetFontColor(XLColor.White)
-                .Fill.SetBackgroundColor(XLColor.Gray);
+            WorkSheet.Cell("A1").Value = "Worksheet Name";
+            WorkSheet.Cell("B1").Value = "ConfigurationTypeName";
+            WorkSheet.Cell("C1").Value = "TypeName";
+            WorkSheet.Cell("D1").Value = "Header Range";
+            WorkSheet.Cell("E1").Value = "Data Range";
         }
 
-        public void WriteInConfigurationWorkSheet(string workSheetName, string type)
+        private void SetHeaderStyle()
         {
-            var lastRowNumber = _configurationWorkSheet.LastCellUsed().Address.RowNumber;
+            _excelStyler.SetHeaderStyle(WorkSheet.Range("A1:E1"));
+        }
+
+        public void Write(ExcelConfigurationWorksheetRow excelConfigurationWorksheetRow)
+        {
+            var lastRowNumber = WorkSheet.LastCellUsed().Address.RowNumber;
             var currentRowNumber = lastRowNumber + 1;
 
-            _configurationWorkSheet.Cell(currentRowNumber, 1).Value = workSheetName;
-            _configurationWorkSheet.Cell(currentRowNumber, 2).Value = type;
-        }
-
-        public void AdjustToContentsAndProtect()
-        {
-            _configurationWorkSheet.Columns().AdjustToContents();
-            _configurationWorkSheet.Protect("1234");
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.WorkSheetName).Value = excelConfigurationWorksheetRow.WorksheetName;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.ConfigurationTypeName).Value = excelConfigurationWorksheetRow.ConfigurationTypeName;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.TypeName).Value = excelConfigurationWorksheetRow.TypeName;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.HeaderRange).Value = excelConfigurationWorksheetRow.HeaderRange;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.DataRange).Value = excelConfigurationWorksheetRow.DataRange;
         }
     }
 }
