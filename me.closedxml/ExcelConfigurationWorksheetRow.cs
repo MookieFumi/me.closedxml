@@ -15,11 +15,11 @@ namespace me.closedxml
             DataRange = dataRange;
         }
 
-        public string WorksheetName { get; set; }
         public string ConfigurationTypeName { get; set; }
-        public string TypeName { get; set; }
-        public string HeaderRange { get; set; }
         public string DataRange { get; set; }
+        public string HeaderRange { get; set; }
+        public string TypeName { get; set; }
+        public string WorksheetName { get; set; }
 
         public abstract IEnumerable<IQueryResult> Read(IXLWorksheet worksheet);
     }

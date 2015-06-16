@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
 using ClosedXML.Excel;
 using me.closedxml.Queries.QueryResult;
 
@@ -25,7 +24,7 @@ namespace me.closedxml.Reader
             foreach (var configurationWorksheetRow in configurationWorksheetRows)
             {
                 var worksheet = _workbook.Worksheet(configurationWorksheetRow.WorksheetName);
-                var data = configurationWorksheetRow.Read(worksheet);
+                IEnumerable<IQueryResult> data = configurationWorksheetRow.Read(worksheet);
                 var excelData = new ExcelData<ExcelConfigurationWorksheetRow>(worksheet.Name, data);
                 returnValue.Add(excelData);
             }

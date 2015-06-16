@@ -11,40 +11,39 @@ using NUnit.Framework;
 
 namespace me.closedxml.test
 {
-    public class ExcelTest
+    public class ExcelWriterReaderTest
     {
         private const string FilePath = @"c:\temp\excel.xlsx";
-        private Collection<IExcelData<IQueryResult>> _items;
+        private Collection<IExcelData<IQueryResult>> _originalItems;
         private Random _random;
         [TestFixtureSetUp]
         public void TextFixtureSetUp()
         {
             _random = new Random();
-            _items = new Collection<IExcelData<IQueryResult>>();
-            _items.Add(new ExcelData<CompanyExcelConfigurationWorksheetRow>("Companies", GetCompanies()));
-            _items.Add(new ExcelData<CustomerExcelConfigurationWorksheetRow>("Customers", GetCustomers()));
+            _originalItems = new Collection<IExcelData<IQueryResult>>();
+            _originalItems.Add(new ExcelData<CompanyExcelConfigurationWorksheetRow>("Companies", GetCompanies()));
+            _originalItems.Add(new ExcelData<CustomerExcelConfigurationWorksheetRow>("Customers", GetCustomers()));
         }
 
         [Test]
-        public void WriteTest()
+        public void ExcelWriterTest()
         {
-            var excelWriter = new ExcelWriter(FilePath, _items);
+            var excelWriter = new ExcelWriter(FilePath, _originalItems);
             excelWriter.Write();
         }
 
         [Test]
-        public void ReadTest()
+        public void ExcelReaderTest()
         {
             var excelReader = new ExcelReader(FilePath);
-            var itemsRead = excelReader.Read();
+            var items = excelReader.Read().ToList();
 
-            Assert.AreEqual(_items.Count, itemsRead.Count());
-            foreach (var itemRead in itemsRead)
+            Assert.AreEqual(_originalItems.Count, items.Count());
+            foreach (var item in items)
             {
-                var worksheetName = itemRead.WorksheetName;
-                var data = _items.Single(p => p.WorksheetName == worksheetName);
-
-                Assert.AreEqual(data.Data.Count(), itemRead.Data.Count());
+                var worksheetName = item.WorksheetName;
+                var data = _originalItems.Single(p => p.WorksheetName == worksheetName);
+                Assert.AreEqual(data.Data.Count(), item.Data.Count());
             }
         }
 

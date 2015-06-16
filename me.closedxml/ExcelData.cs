@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Wordprocessing;
 using me.closedxml.Queries.QueryResult;
-using me.closedxml.Reader;
 
 namespace me.closedxml
 {
     public class ExcelData<T> : IExcelData<IQueryResult> where T : ExcelConfigurationWorksheetRow
     {
-        private readonly ExcelStyler _excelStyler;
-
         private const string FirstCellAddressInRange = "A2";
         private const int FirstCellRow = 2;
         private const int MaxCellRow = 999;
-        private string ConfigurationTypeName { get; set; }
+        private readonly ExcelStyler _excelStyler;
 
-        public string WorksheetName { get; set; }
-        public IEnumerable<IQueryResult> Data { get; set; }
-        
         public ExcelData(string worksheetName, IEnumerable<IQueryResult> data)
         {
             WorksheetName = worksheetName;
@@ -28,6 +21,13 @@ namespace me.closedxml
             Data = data;
             _excelStyler = new ExcelStyler();
         }
+
+        private string ConfigurationTypeName { get; set; }
+
+        #region IExcelData<IQueryResult> members
+
+        public string WorksheetName { get; set; }
+        public IEnumerable<IQueryResult> Data { get; set; }
 
         public void Write(XLWorkbook workbook)
         {
@@ -42,6 +42,8 @@ namespace me.closedxml
             AddHeader(worksheet, propertyInfos);
             AddData(worksheet, propertyInfos);
         }
+
+        #endregion
 
         private void AddData(IXLWorksheet worksheet, PropertyInfo[] propertyInfos)
         {
@@ -73,6 +75,13 @@ namespace me.closedxml
             }
         }
 
+        private void AddDataInConfigurationWorkSheet(XLWorkbook workbook, Type configurationType, string worksheetName, Type type, string dataRange, string headerRange)
+        {
+            var dataConfiguration = (ExcelConfigurationWorksheetRow)Activator.CreateInstance(configurationType, worksheetName, configurationType.FullName, type.FullName, headerRange, dataRange);
+            var excelConfigurationWorksheet = new ExcelConfigurationWorksheet(workbook, _excelStyler);
+            excelConfigurationWorksheet.Write(dataConfiguration);
+        }
+
         private void AddHeader(IXLWorksheet worksheet, PropertyInfo[] properties)
         {
             for (var i = 0; i < properties.Count(); i++)
@@ -81,13 +90,6 @@ namespace me.closedxml
             }
 
             _excelStyler.SetHeaderStyle(worksheet.Range(1, 1, 1, properties.Count()));
-        }
-
-        private void AddDataInConfigurationWorkSheet(XLWorkbook workbook, Type configurationType, string worksheetName, Type type, string dataRange, string headerRange)
-        {
-            var dataConfiguration = (ExcelConfigurationWorksheetRow)Activator.CreateInstance(configurationType, worksheetName, configurationType.FullName, type.FullName, headerRange, dataRange);
-            var excelConfigurationWorksheet = new ExcelConfigurationWorksheet(workbook, _excelStyler);
-            excelConfigurationWorksheet.Write(dataConfiguration);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ClosedXML.Excel;
 using me.closedxml.Queries.QueryResult;
 
@@ -9,7 +8,7 @@ namespace me.closedxml
     {
         string WorksheetName { get; set; }
         IEnumerable<T> Data { get; set; }
-
+        
         void Write(XLWorkbook workbook);
     }
 }

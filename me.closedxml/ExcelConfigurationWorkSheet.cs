@@ -16,8 +16,21 @@ namespace me.closedxml
             }
             WorkSheet = workbook.Worksheets.Single(p => p.Name == strings.Configuration);
             _excelStyler = excelStyler;
+
             AddHeaderValues();
             SetHeaderStyle();
+        }
+
+        public void Write(ExcelConfigurationWorksheetRow excelConfigurationWorksheetRow)
+        {
+            var lastRowNumber = WorkSheet.LastCellUsed().Address.RowNumber;
+            var currentRowNumber = lastRowNumber + 1;
+
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.WorkSheetName).Value = excelConfigurationWorksheetRow.WorksheetName;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.ConfigurationTypeName).Value = excelConfigurationWorksheetRow.ConfigurationTypeName;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.TypeName).Value = excelConfigurationWorksheetRow.TypeName;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.HeaderRange).Value = excelConfigurationWorksheetRow.HeaderRange;
+            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.DataRange).Value = excelConfigurationWorksheetRow.DataRange;
         }
 
         private void AddHeaderValues()
@@ -32,18 +45,6 @@ namespace me.closedxml
         private void SetHeaderStyle()
         {
             _excelStyler.SetHeaderStyle(WorkSheet.Range("A1:E1"));
-        }
-
-        public void Write(ExcelConfigurationWorksheetRow excelConfigurationWorksheetRow)
-        {
-            var lastRowNumber = WorkSheet.LastCellUsed().Address.RowNumber;
-            var currentRowNumber = lastRowNumber + 1;
-
-            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.WorkSheetName).Value = excelConfigurationWorksheetRow.WorksheetName;
-            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.ConfigurationTypeName).Value = excelConfigurationWorksheetRow.ConfigurationTypeName;
-            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.TypeName).Value = excelConfigurationWorksheetRow.TypeName;
-            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.HeaderRange).Value = excelConfigurationWorksheetRow.HeaderRange;
-            WorkSheet.Cell(currentRowNumber, ExcelConfigurationWorksheetColumnNumber.DataRange).Value = excelConfigurationWorksheetRow.DataRange;
         }
     }
 }

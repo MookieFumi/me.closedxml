@@ -2,15 +2,14 @@
 using System.Linq;
 using ClosedXML.Excel;
 using me.closedxml.Queries.QueryResult;
-using me.closedxml.Reader;
 
 namespace me.closedxml.Writer
 {
     public class ExcelWriter
     {
-        private readonly XLWorkbook _workbook;
         private readonly string _filePath;
         private readonly IEnumerable<IExcelData<IQueryResult>> _items;
+        private readonly XLWorkbook _workbook;
 
         public ExcelWriter(string filePath, IEnumerable<IExcelData<IQueryResult>> items)
         {
@@ -25,6 +24,7 @@ namespace me.closedxml.Writer
             {
                 item.Write(_workbook);
             }
+            
             SaveWorkBook();
         }
 

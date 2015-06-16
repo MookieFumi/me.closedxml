@@ -10,6 +10,7 @@ La estructura de la configuración es:
 - HeaderRange
 - DataRange
 
+
             var excelWriter = new ExcelWriter(FilePath, _items);
             excelWriter.Write();
 
@@ -17,6 +18,6 @@ La estructura de la configuración es:
 Lee los datos del excel y por reflexión, los genera en memoria con los mismo tipos con los que fueron guardados.
 
             var excelReader = new ExcelReader(FilePath);
-            var itemsRead = excelReader.Read();
+            var items = excelReader.Read();
 
 
