@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using ClosedXML.Excel;
 using me.closedxml.Queries.QueryResult;
 
-namespace me.closedxml
+namespace me.closedxml.Reader
 {
     public class CustomerExcelConfigurationWorksheetRow : ExcelConfigurationWorksheetRow
     {

@@ -22,11 +22,12 @@ namespace me.closedxml.Reader
             var returnValue = new Collection<IExcelData<IQueryResult>>();
 
             var configurationWorksheetRows = GetConfigurationWorksheetRows();
-            foreach (ExcelConfigurationWorksheetRow configurationWorksheetRow in configurationWorksheetRows)
+            foreach (var configurationWorksheetRow in configurationWorksheetRows)
             {
                 var worksheet = _workbook.Worksheet(configurationWorksheetRow.WorksheetName);
                 var data = configurationWorksheetRow.Read(worksheet);
-                returnValue.Add(new ExcelData<ExcelConfigurationWorksheetRow>(worksheet.Name, data));
+                var excelData = new ExcelData<ExcelConfigurationWorksheetRow>(worksheet.Name, data);
+                returnValue.Add(excelData);
             }
 
             return returnValue;

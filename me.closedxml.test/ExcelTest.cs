@@ -35,7 +35,7 @@ namespace me.closedxml.test
         public void ReadTest()
         {
             var excelReader = new ExcelReader(FilePath);
-            var itemsRead = excelReader.Read().ToList();
+            var itemsRead = excelReader.Read();
 
             Assert.AreEqual(_items.Count, itemsRead.Count());
             foreach (var itemRead in itemsRead)

@@ -16,9 +16,9 @@ namespace me.closedxml
         private const string FirstCellAddressInRange = "A2";
         private const int FirstCellRow = 2;
         private const int MaxCellRow = 999;
+        private string ConfigurationTypeName { get; set; }
 
         public string WorksheetName { get; set; }
-        public string ConfigurationTypeName { get; set; }
         public IEnumerable<IQueryResult> Data { get; set; }
         
         public ExcelData(string worksheetName, IEnumerable<IQueryResult> data)

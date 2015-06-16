@@ -22,11 +22,11 @@ namespace me.closedxml
 
         private void AddHeaderValues()
         {
-            WorkSheet.Cell("A1").Value = "Worksheet Name";
+            WorkSheet.Cell("A1").Value = "WorksheetName";
             WorkSheet.Cell("B1").Value = "ConfigurationTypeName";
             WorkSheet.Cell("C1").Value = "TypeName";
-            WorkSheet.Cell("D1").Value = "Header Range";
-            WorkSheet.Cell("E1").Value = "Data Range";
+            WorkSheet.Cell("D1").Value = "HeaderRange";
+            WorkSheet.Cell("E1").Value = "DataRange";
         }
 
         private void SetHeaderStyle()

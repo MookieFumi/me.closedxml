@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompanyExcelConfigurationWorksheetRow.cs" />
-    <Compile Include="CustomerExcelConfigurationWorksheetRow.cs" />
+    <Compile Include="Reader\CompanyExcelConfigurationWorksheetRow.cs" />
+    <Compile Include="Reader\CustomerExcelConfigurationWorksheetRow.cs" />
     <Compile Include="ExcelConfigurationWorksheetColumnNumber.cs" />
     <Compile Include="ExcelConfigurationWorksheetRow.cs" />
     <Compile Include="ExcelConfigurationWorksheet.cs" />
