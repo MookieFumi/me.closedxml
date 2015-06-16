@@ -1,3 +1,6 @@
+>Primeras pruebas con ClosedXML - The easy way to OpenXML
+https://closedxml.codeplex.com
+
 ###Exportador de datos a Excel
 Genera un Excel con una hoja de configuración que define el resto de hojas que contienen los datos exportados.
 La estructura de la configuración es:
@@ -15,4 +18,5 @@ Lee los datos del excel y por reflexión, los genera en memoria con los mismo tip
 
             var excelReader = new ExcelReader(FilePath);
             var itemsRead = excelReader.Read();
+
 
